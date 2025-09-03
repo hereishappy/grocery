@@ -6,116 +6,7 @@
     <title>Grocery Shopping App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @media print {
-            .no-print { display: none !important; }
-            body { 
-                font-size: 11px; 
-                margin: 0;
-                padding: 20px;
-                background: white;
-                width: 100vw;
-                height: 100vh;
-                box-sizing: border-box;
-            }
-            .print-container {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-                border: 3px solid #0369a1;
-                border-radius: 15px;
-                padding: 25px;
-                box-sizing: border-box;
-            }
-            .print-header {
-                text-align: center;
-                margin-bottom: 20px;
-                border-bottom: 2px solid #0369a1;
-                padding-bottom: 15px;
-            }
-            .print-title { 
-                font-size: 24px; 
-                font-weight: bold; 
-                color: #0369a1;
-                margin: 0;
-            }
-            .print-subtitle {
-                font-size: 14px;
-                color: #64748b;
-                margin: 5px 0 0 0;
-            }
-            .print-content {
-                flex: 1;
-                display: flex;
-                gap: 30px;
-            }
-            .print-items {
-                flex: 2;
-            }
-            .print-summary {
-                flex: 1;
-                background: white;
-                border-radius: 10px;
-                padding: 20px;
-                border: 2px solid #e2e8f0;
-                height: fit-content;
-            }
-            .print-table {
-                width: 100%;
-                border-collapse: collapse;
-                background: white;
-                border-radius: 8px;
-                overflow: hidden;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-            .print-table th {
-                background: #0369a1;
-                color: white;
-                padding: 8px;
-                font-size: 10px;
-                font-weight: bold;
-            }
-            .print-table td {
-                padding: 6px 8px;
-                border-bottom: 1px solid #e2e8f0;
-                font-size: 10px;
-            }
-            .print-table tr:nth-child(even) {
-                background: #f8fafc;
-            }
-            .print-footer {
-                margin-top: 20px;
-                text-align: center;
-                font-size: 10px;
-                color: #64748b;
-                border-top: 1px solid #e2e8f0;
-                padding-top: 10px;
-            }
-            .total-section {
-                background: #0369a1;
-                color: white;
-                padding: 15px;
-                border-radius: 8px;
-                margin-bottom: 15px;
-                text-align: center;
-            }
-            .total-amount {
-                font-size: 20px;
-                font-weight: bold;
-            }
-            .summary-item {
-                display: flex;
-                justify-content: space-between;
-                padding: 8px 0;
-                border-bottom: 1px solid #e2e8f0;
-                font-size: 11px;
-            }
-            @page {
-                size: landscape;
-                margin: 0.5in;
-            }
-        }
+
     </style>
 </head>
 <body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
@@ -299,73 +190,9 @@
 
         <!-- Shopping Cart -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <!-- Print Layout (Hidden on screen) -->
-            <div class="hidden print:block print-container">
-                <div class="print-header">
-                    <h1 class="print-title">🛒 GROCERY SHOPPING LIST</h1>
-                    <p class="print-subtitle">Your Complete Shopping Guide</p>
-                </div>
-                
-                <div class="print-content">
-                    <div class="print-items">
-                        <table class="print-table" id="printTable">
-                            <thead>
-                                <tr>
-                                    <th>S.No</th>
-                                    <th>Item Name</th>
-                                    <th>Quantity</th>
-                                    <th>Unit</th>
-                                    <th>Rate (₹)</th>
-                                    <th>Amount (₹)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="printCartItems">
-                                <!-- Items will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="print-summary">
-                        <div class="total-section">
-                            <div style="font-size: 14px; margin-bottom: 5px;">TOTAL AMOUNT</div>
-                            <div class="total-amount" id="printTotalAmount">₹0.00</div>
-                        </div>
-                        
-                        <div style="margin-bottom: 15px; font-weight: bold; color: #0369a1;">Summary:</div>
-                        <div class="summary-item">
-                            <span>Total Items:</span>
-                            <span id="printItemCount">0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Date:</span>
-                            <span id="printDate2"></span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Time:</span>
-                            <span id="printTime"></span>
-                        </div>
-                        
-                        <div style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 8px; text-align: center;">
-                            <div style="font-weight: bold; color: #0369a1; margin-bottom: 5px;">Shopping Tips</div>
-                            <div style="font-size: 9px; line-height: 1.4;">
-                                ✓ Check expiry dates<br>
-                                ✓ Compare prices<br>
-                                ✓ Bring reusable bags<br>
-                                ✓ Stick to your list
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="print-footer">
-                    <p>Generated by Grocery Shopping App | Happy Shopping! 🛒</p>
-                </div>
-            </div>
-
-            <!-- Screen Layout -->
-            <h2 class="text-lg font-semibold text-gray-800 mb-4 no-print">Shopping Cart</h2>
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Shopping Cart</h2>
             
-            <div class="overflow-x-auto no-print">
+            <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead>
                         <tr class="border-b border-gray-200">
@@ -374,7 +201,7 @@
                             <th class="text-left py-2 text-xs font-semibold text-gray-600">Qty</th>
                             <th class="text-left py-2 text-xs font-semibold text-gray-600">Unit</th>
                             <th class="text-right py-2 text-xs font-semibold text-gray-600">Price</th>
-                            <th class="text-center py-2 text-xs font-semibold text-gray-600 no-print">Action</th>
+                            <th class="text-center py-2 text-xs font-semibold text-gray-600">Action</th>
                         </tr>
                     </thead>
                     <tbody id="cartItems">
@@ -386,7 +213,7 @@
             </div>
 
             <!-- Total -->
-            <div class="border-t border-gray-200 mt-4 pt-4 no-print">
+            <div class="border-t border-gray-200 mt-4 pt-4">
                 <div class="flex justify-between items-center">
                     <span class="text-lg font-semibold text-gray-800">Total Amount:</span>
                     <span class="text-xl font-bold text-green-600" id="totalAmount">₹0.00</span>
@@ -395,12 +222,12 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="space-y-3 no-print">
+        <div class="space-y-3">
             <button onclick="clearCart()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
                 Clear Cart
             </button>
-            <button onclick="printList()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
-                🖨️ Print Shopping List
+            <button onclick="downloadReport()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                📥 Download Report (JPG)
             </button>
         </div>
 
@@ -486,27 +313,19 @@
         function updateCartDisplay() {
             const cartItemsElement = document.getElementById('cartItems');
             const totalAmountElement = document.getElementById('totalAmount');
-            const printCartItemsElement = document.getElementById('printCartItems');
-            const printTotalAmountElement = document.getElementById('printTotalAmount');
-            const printItemCountElement = document.getElementById('printItemCount');
 
             if (cartItems.length === 0) {
                 cartItemsElement.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-500">No items added yet</td></tr>';
                 totalAmountElement.textContent = '₹0.00';
-                printCartItemsElement.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No items added yet</td></tr>';
-                printTotalAmountElement.textContent = '₹0.00';
-                printItemCountElement.textContent = '0';
                 return;
             }
 
             let html = '';
-            let printHtml = '';
             let totalAmount = 0;
 
             cartItems.forEach(item => {
                 totalAmount += item.totalPrice;
                 
-                // Screen version
                 html += `
                     <tr class="border-b border-gray-100">
                         <td class="py-3 text-gray-800">${item.serialNo}</td>
@@ -514,32 +333,17 @@
                         <td class="py-3 text-gray-600">${item.quantity}</td>
                         <td class="py-3 text-gray-600">${item.unit}</td>
                         <td class="py-3 text-right text-gray-800 font-semibold">₹${item.totalPrice.toFixed(2)}</td>
-                        <td class="py-3 text-center no-print">
+                        <td class="py-3 text-center">
                             <button onclick="removeItem(${item.id})" class="text-red-600 hover:text-red-800 text-sm font-medium">
                                 Remove
                             </button>
                         </td>
                     </tr>
                 `;
-
-                // Print version
-                printHtml += `
-                    <tr>
-                        <td style="text-align: center;">${item.serialNo}</td>
-                        <td>${item.name}</td>
-                        <td style="text-align: center;">${item.quantity}</td>
-                        <td style="text-align: center;">${item.unit}</td>
-                        <td style="text-align: right;">₹${item.pricePerUnit.toFixed(2)}</td>
-                        <td style="text-align: right; font-weight: bold;">₹${item.totalPrice.toFixed(2)}</td>
-                    </tr>
-                `;
             });
 
             cartItemsElement.innerHTML = html;
             totalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
-            printCartItemsElement.innerHTML = printHtml;
-            printTotalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
-            printItemCountElement.textContent = cartItems.length.toString();
         }
 
         function clearForm() {
@@ -562,19 +366,169 @@
             }
         }
 
-        function printList() {
+        function downloadReport() {
             if (cartItems.length === 0) {
-                alert('Please add some items to your cart before printing');
+                alert('Please add some items to your cart before downloading');
                 return;
             }
 
-            // Set print date and time
-            const now = new Date();
-            document.getElementById('printDate2').textContent = now.toLocaleDateString();
-            document.getElementById('printTime').textContent = now.toLocaleTimeString();
+            // Create a canvas with 16:9 aspect ratio (width:height = 9:16, so 1600x900 for good quality)
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
             
-            // Print the page
-            window.print();
+            // Set canvas size (16:9 ratio - 1600x900 for high quality)
+            canvas.width = 1600;
+            canvas.height = 900;
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#f0f9ff');
+            gradient.addColorStop(1, '#e0f2fe');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add border
+            ctx.strokeStyle = '#0369a1';
+            ctx.lineWidth = 6;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+            
+            // Header
+            ctx.fillStyle = '#0369a1';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🛒 GROCERY SHOPPING LIST', canvas.width / 2, 100);
+            
+            ctx.font = '24px Arial';
+            ctx.fillStyle = '#64748b';
+            ctx.fillText('Your Complete Shopping Guide', canvas.width / 2, 140);
+            
+            // Draw line under header
+            ctx.strokeStyle = '#0369a1';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(100, 170);
+            ctx.lineTo(canvas.width - 100, 170);
+            ctx.stroke();
+            
+            // Calculate totals
+            let totalAmount = 0;
+            cartItems.forEach(item => totalAmount += item.totalPrice);
+            
+            // Left side - Items table
+            const tableStartY = 220;
+            const tableWidth = 900;
+            const rowHeight = 35;
+            
+            // Table header
+            ctx.fillStyle = '#0369a1';
+            ctx.fillRect(80, tableStartY, tableWidth, 40);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('S.No', 100, tableStartY + 25);
+            ctx.fillText('Item Name', 180, tableStartY + 25);
+            ctx.fillText('Qty', 500, tableStartY + 25);
+            ctx.fillText('Unit', 580, tableStartY + 25);
+            ctx.fillText('Rate (₹)', 680, tableStartY + 25);
+            ctx.textAlign = 'right';
+            ctx.fillText('Amount (₹)', 960, tableStartY + 25);
+            
+            // Table rows
+            ctx.font = '16px Arial';
+            cartItems.forEach((item, index) => {
+                const y = tableStartY + 40 + (index * rowHeight);
+                
+                // Alternating row colors
+                if (index % 2 === 0) {
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.fillRect(80, y, tableWidth, rowHeight);
+                }
+                
+                ctx.fillStyle = '#1f2937';
+                ctx.textAlign = 'left';
+                ctx.fillText(item.serialNo.toString(), 100, y + 22);
+                ctx.fillText(item.name.length > 25 ? item.name.substring(0, 25) + '...' : item.name, 180, y + 22);
+                ctx.fillText(item.quantity.toString(), 500, y + 22);
+                ctx.fillText(item.unit, 580, y + 22);
+                ctx.fillText('₹' + item.pricePerUnit.toFixed(2), 680, y + 22);
+                ctx.textAlign = 'right';
+                ctx.fillText('₹' + item.totalPrice.toFixed(2), 960, y + 22);
+            });
+            
+            // Right side - Summary panel
+            const summaryX = 1050;
+            const summaryY = 220;
+            const summaryWidth = 480;
+            
+            // Summary background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(summaryX, summaryY, summaryWidth, 400);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(summaryX, summaryY, summaryWidth, 400);
+            
+            // Total amount section
+            ctx.fillStyle = '#0369a1';
+            ctx.fillRect(summaryX + 20, summaryY + 20, summaryWidth - 40, 80);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('TOTAL AMOUNT', summaryX + summaryWidth/2, summaryY + 50);
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText('₹' + totalAmount.toFixed(2), summaryX + summaryWidth/2, summaryY + 85);
+            
+            // Summary details
+            ctx.fillStyle = '#0369a1';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Summary:', summaryX + 30, summaryY + 140);
+            
+            ctx.fillStyle = '#1f2937';
+            ctx.font = '16px Arial';
+            const now = new Date();
+            
+            ctx.fillText('Total Items: ' + cartItems.length, summaryX + 30, summaryY + 170);
+            ctx.fillText('Date: ' + now.toLocaleDateString(), summaryX + 30, summaryY + 200);
+            ctx.fillText('Time: ' + now.toLocaleTimeString(), summaryX + 30, summaryY + 230);
+            
+            // Shopping tips
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(summaryX + 20, summaryY + 260, summaryWidth - 40, 120);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.strokeRect(summaryX + 20, summaryY + 260, summaryWidth - 40, 120);
+            
+            ctx.fillStyle = '#0369a1';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Shopping Tips', summaryX + summaryWidth/2, summaryY + 285);
+            
+            ctx.fillStyle = '#1f2937';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('✓ Check expiry dates', summaryX + 40, summaryY + 310);
+            ctx.fillText('✓ Compare prices', summaryX + 40, summaryY + 330);
+            ctx.fillText('✓ Bring reusable bags', summaryX + 40, summaryY + 350);
+            ctx.fillText('✓ Stick to your list', summaryX + 40, summaryY + 370);
+            
+            // Footer
+            ctx.fillStyle = '#64748b';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Generated by Grocery Shopping App | Happy Shopping! 🛒', canvas.width / 2, canvas.height - 40);
+            
+            // Convert canvas to blob and download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'grocery-shopping-list-' + now.toISOString().split('T')[0] + '.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/jpeg', 0.9);
         }
 
         // Auto-calculate total as user types in price field
@@ -582,5 +536,5 @@
             // Optional: Show live calculation preview
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9794ac5c9202465e',t:'MTc1Njg5NjQ5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9794b5677291465e',t:'MTc1Njg5Njg2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
