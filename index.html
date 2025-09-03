@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Shopping App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { 
+                font-size: 11px; 
+                margin: 0;
+                padding: 20px;
+                background: white;
+                width: 100vw;
+                height: 100vh;
+                box-sizing: border-box;
+            }
+            .print-container {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                border: 3px solid #0369a1;
+                border-radius: 15px;
+                padding: 25px;
+                box-sizing: border-box;
+            }
+            .print-header {
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #0369a1;
+                padding-bottom: 15px;
+            }
+            .print-title { 
+                font-size: 24px; 
+                font-weight: bold; 
+                color: #0369a1;
+                margin: 0;
+            }
+            .print-subtitle {
+                font-size: 14px;
+                color: #64748b;
+                margin: 5px 0 0 0;
+            }
+            .print-content {
+                flex: 1;
+                display: flex;
+                gap: 30px;
+            }
+            .print-items {
+                flex: 2;
+            }
+            .print-summary {
+                flex: 1;
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                border: 2px solid #e2e8f0;
+                height: fit-content;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            .print-table th {
+                background: #0369a1;
+                color: white;
+                padding: 8px;
+                font-size: 10px;
+                font-weight: bold;
+            }
+            .print-table td {
+                padding: 6px 8px;
+                border-bottom: 1px solid #e2e8f0;
+                font-size: 10px;
+            }
+            .print-table tr:nth-child(even) {
+                background: #f8fafc;
+            }
+            .print-footer {
+                margin-top: 20px;
+                text-align: center;
+                font-size: 10px;
+                color: #64748b;
+                border-top: 1px solid #e2e8f0;
+                padding-top: 10px;
+            }
+            .total-section {
+                background: #0369a1;
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            .total-amount {
+                font-size: 20px;
+                font-weight: bold;
+            }
+            .summary-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                border-bottom: 1px solid #e2e8f0;
+                font-size: 11px;
+            }
+            @page {
+                size: landscape;
+                margin: 0.5in;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
+    <div class="container mx-auto px-4 py-6 max-w-md">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 text-center mb-2">🛒 Grocery List</h1>
+            <p class="text-gray-600 text-center text-sm">Add items to your shopping cart</p>
+        </div>
+
+        <!-- Add Item Form -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6 no-print">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Add New Item</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Item Name</label>
+                    <select id="itemSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <option value="">Select an item...</option>
+                        
+                        <!-- Grains & Staples -->
+                        <optgroup label="🌾 Grains & Staples">
+                            <option value="Rice (Basmati)|kg|120">Rice (Basmati)</option>
+                            <option value="Rice (Sona Masoori)|kg|85">Rice (Sona Masoori)</option>
+                            <option value="Rice (Kolam)|kg|75">Rice (Kolam)</option>
+                            <option value="Rice (Parboiled)|kg|70">Rice (Parboiled)</option>
+                            <option value="Rice (Brown)|kg|140">Rice (Brown)</option>
+                            <option value="Wheat Flour (Atta)|kg|45">Wheat Flour (Atta)</option>
+                            <option value="Sooji/Rava|kg|55">Sooji/Rava</option>
+                            <option value="Maida|kg|40">Maida</option>
+                            <option value="Poha|kg|65">Poha (Flattened Rice)</option>
+                            <option value="Sabudana|kg|120">Sabudana (Tapioca Pearls)</option>
+                            <option value="Jowar Flour|kg|60">Jowar Flour</option>
+                            <option value="Bajra Flour|kg|55">Bajra Flour</option>
+                            <option value="Ragi Flour|kg|80">Ragi Flour</option>
+                        </optgroup>
+
+                        <!-- Vegetables -->
+                        <optgroup label="🥔 Vegetables">
+                            <option value="Potato (Aloo)|kg|25">Potato (Aloo)</option>
+                            <option value="Onion (Pyaaz)|kg|30">Onion (Pyaaz)</option>
+                            <option value="Tomato (Tamatar)|kg|40">Tomato (Tamatar)</option>
+                            <option value="Garlic|kg|200">Garlic</option>
+                            <option value="Ginger|kg|150">Ginger</option>
+                            <option value="Green Chilies|kg|80">Green Chilies</option>
+                            <option value="Coriander Leaves (Dhaniya)|kg|60">Coriander Leaves (Dhaniya)</option>
+                            <option value="Spinach (Palak)|kg|35">Spinach (Palak)</option>
+                            <option value="Fenugreek Leaves (Methi)|kg|45">Fenugreek Leaves (Methi)</option>
+                            <option value="Cabbage (Patta Gobhi)|kg|20">Cabbage (Patta Gobhi)</option>
+                            <option value="Cauliflower (Phool Gobhi)|kg|35">Cauliflower (Phool Gobhi)</option>
+                            <option value="Bitter Gourd (Karela)|kg|50">Bitter Gourd (Karela)</option>
+                            <option value="Bottle Gourd (Lauki)|kg|25">Bottle Gourd (Lauki)</option>
+                            <option value="Ridge Gourd (Turai)|kg|40">Ridge Gourd (Turai)</option>
+                            <option value="Okra (Bhindi)|kg|60">Okra (Bhindi)</option>
+                            <option value="Brinjal (Baingan)|kg|35">Brinjal (Baingan)</option>
+                            <option value="Drumstick (Moringa)|kg|80">Drumstick (Moringa)</option>
+                            <option value="Pumpkin (Kaddu)|kg|20">Pumpkin (Kaddu)</option>
+                            <option value="Radish (Mooli)|kg|30">Radish (Mooli)</option>
+                            <option value="Beetroot (Chukandar)|kg|45">Beetroot (Chukandar)</option>
+                            <option value="Carrot (Gajar)|kg|40">Carrot (Gajar)</option>
+                            <option value="Green Beans|kg|55">Green Beans</option>
+                            <option value="Capsicum (Shimla Mirch)|kg|70">Capsicum (Shimla Mirch)</option>
+                            <option value="Cucumber (Kheera)|kg|25">Cucumber (Kheera)</option>
+                            <option value="Cluster Beans (Gawar)|kg|65">Cluster Beans (Gawar)</option>
+                            <option value="Arbi (Colocasia)|kg|50">Arbi (Colocasia)</option>
+                            <option value="Raw Banana (Kachha Kela)|kg|35">Raw Banana (Kachha Kela)</option>
+                            <option value="Turnip (Shalgam)|kg|30">Turnip (Shalgam)</option>
+                            <option value="Green Peas (Matar)|kg|80">Green Peas (Matar)</option>
+                        </optgroup>
+
+                        <!-- Fruits -->
+                        <optgroup label="🍎 Fruits">
+                            <option value="Banana|kg|60">Banana</option>
+                            <option value="Mango|kg|120">Mango (Seasonal)</option>
+                            <option value="Guava|kg|50">Guava</option>
+                            <option value="Papaya|kg|35">Papaya</option>
+                            <option value="Apple|kg|150">Apple</option>
+                            <option value="Orange|kg|80">Orange</option>
+                            <option value="Mosambi|kg|70">Mosambi</option>
+                            <option value="Grapes|kg|100">Grapes</option>
+                            <option value="Watermelon|kg|20">Watermelon</option>
+                            <option value="Musk Melon|kg|30">Musk Melon</option>
+                            <option value="Pomegranate|kg|180">Pomegranate</option>
+                        </optgroup>
+
+                        <!-- Pulses & Lentils -->
+                        <optgroup label="🫘 Pulses & Lentils (Dal)">
+                            <option value="Toor Dal (Arhar)|kg|120">Toor Dal (Arhar)</option>
+                            <option value="Moong Dal (Yellow)|kg|110">Moong Dal (Yellow)</option>
+                            <option value="Moong Dal (Green)|kg|130">Moong Dal (Green)</option>
+                            <option value="Chana Dal|kg|90">Chana Dal</option>
+                            <option value="Masoor Dal (Red)|kg|100">Masoor Dal (Red)</option>
+                            <option value="Urad Dal (Split)|kg|140">Urad Dal (Split)</option>
+                            <option value="Urad Dal (Whole)|kg|150">Urad Dal (Whole)</option>
+                            <option value="Kabuli Chana|kg|80">Kabuli Chana (Chickpeas)</option>
+                            <option value="Kala Chana|kg|70">Kala Chana (Black Chickpeas)</option>
+                            <option value="Rajma|kg|160">Rajma (Kidney Beans)</option>
+                            <option value="Whole Moong|kg|120">Whole Moong</option>
+                            <option value="Moth Beans|kg|110">Moth Beans</option>
+                            <option value="Cowpeas|kg|90">Cowpeas</option>
+                        </optgroup>
+
+                        <!-- Spices -->
+                        <optgroup label="🧄 Spices (Masale)">
+                            <option value="Turmeric (Haldi)|kg|200">Turmeric (Haldi)</option>
+                            <option value="Red Chili Powder|kg|300">Red Chili Powder</option>
+                            <option value="Coriander Powder|kg|180">Coriander Powder</option>
+                            <option value="Cumin Seeds (Jeera)|kg|400">Cumin Seeds (Jeera)</option>
+                            <option value="Mustard Seeds (Rai)|kg|250">Mustard Seeds (Rai)</option>
+                            <option value="Garam Masala|kg|600">Garam Masala</option>
+                            <option value="Black Pepper|kg|800">Black Pepper</option>
+                            <option value="Hing (Asafoetida)|kg|2000">Hing (Asafoetida)</option>
+                            <option value="Kasuri Methi|kg|400">Kasuri Methi</option>
+                            <option value="Curry Leaves|kg|100">Curry Leaves</option>
+                            <option value="Tamarind|kg|120">Tamarind</option>
+                        </optgroup>
+
+                        <!-- Oils & Essentials -->
+                        <optgroup label="🧈 Oils & Essentials">
+                            <option value="Mustard Oil|ml|140">Mustard Oil</option>
+                            <option value="Sunflower Oil|ml|120">Sunflower Oil</option>
+                            <option value="Groundnut Oil|ml|160">Groundnut Oil</option>
+                            <option value="Ghee (Desi)|ml|500">Ghee (Desi)</option>
+                            <option value="Coconut Oil|ml|180">Coconut Oil</option>
+                        </optgroup>
+
+                        <!-- Dairy -->
+                        <optgroup label="🥛 Dairy & Others">
+                            <option value="Milk|ml|60">Milk</option>
+                            <option value="Curd (Dahi)|ml|70">Curd (Dahi)</option>
+                            <option value="Paneer|kg|350">Paneer</option>
+                            <option value="Butter|kg|400">Butter</option>
+                            <option value="Buttermilk (Chaas)|ml|40">Buttermilk (Chaas)</option>
+                        </optgroup>
+
+                        <!-- Snacks & Misc -->
+                        <optgroup label="🍪 Snacks & Miscellaneous">
+                            <option value="Papad|qty|3">Papad (per piece)</option>
+                            <option value="Pickles (Achar)|kg|200">Pickles (Achar)</option>
+                            <option value="Jaggery (Gur)|kg|80">Jaggery (Gur)</option>
+                            <option value="Tea (Chai Patti)|kg|400">Tea (Chai Patti)</option>
+                            <option value="Coffee|kg|800">Coffee</option>
+                            <option value="Biscuits|qty|20">Biscuits (per packet)</option>
+                            <option value="Almonds|kg|700">Almonds</option>
+                            <option value="Cashews|kg|800">Cashews</option>
+                            <option value="Raisins|kg|300">Raisins</option>
+                            <option value="Dates|kg|250">Dates</option>
+                            <option value="Salt|kg|20">Salt</option>
+                            <option value="Sugar|kg|50">Sugar</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Unit</label>
+                        <input type="text" id="unitInput" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                        <input type="number" id="qtyInput" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" min="0.1" step="0.1" placeholder="0">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price per unit (₹)</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="priceInput" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" step="0.1" min="0">
+                        <button type="button" onclick="resetPrice()" class="px-3 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm rounded-lg transition duration-200" title="Reset to default price">
+                            ↻
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">You can edit the price manually</p>
+                </div>
+
+                <button onclick="addItem()" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+
+        <!-- Shopping Cart -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <!-- Print Layout (Hidden on screen) -->
+            <div class="hidden print:block print-container">
+                <div class="print-header">
+                    <h1 class="print-title">🛒 GROCERY SHOPPING LIST</h1>
+                    <p class="print-subtitle">Your Complete Shopping Guide</p>
+                </div>
+                
+                <div class="print-content">
+                    <div class="print-items">
+                        <table class="print-table" id="printTable">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                    <th>Rate (₹)</th>
+                                    <th>Amount (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="printCartItems">
+                                <!-- Items will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="print-summary">
+                        <div class="total-section">
+                            <div style="font-size: 14px; margin-bottom: 5px;">TOTAL AMOUNT</div>
+                            <div class="total-amount" id="printTotalAmount">₹0.00</div>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px; font-weight: bold; color: #0369a1;">Summary:</div>
+                        <div class="summary-item">
+                            <span>Total Items:</span>
+                            <span id="printItemCount">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Date:</span>
+                            <span id="printDate2"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Time:</span>
+                            <span id="printTime"></span>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 8px; text-align: center;">
+                            <div style="font-weight: bold; color: #0369a1; margin-bottom: 5px;">Shopping Tips</div>
+                            <div style="font-size: 9px; line-height: 1.4;">
+                                ✓ Check expiry dates<br>
+                                ✓ Compare prices<br>
+                                ✓ Bring reusable bags<br>
+                                ✓ Stick to your list
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="print-footer">
+                    <p>Generated by Grocery Shopping App | Happy Shopping! 🛒</p>
+                </div>
+            </div>
+
+            <!-- Screen Layout -->
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 no-print">Shopping Cart</h2>
+            
+            <div class="overflow-x-auto no-print">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-2 text-xs font-semibold text-gray-600">S.No</th>
+                            <th class="text-left py-2 text-xs font-semibold text-gray-600">Item</th>
+                            <th class="text-left py-2 text-xs font-semibold text-gray-600">Qty</th>
+                            <th class="text-left py-2 text-xs font-semibold text-gray-600">Unit</th>
+                            <th class="text-right py-2 text-xs font-semibold text-gray-600">Price</th>
+                            <th class="text-center py-2 text-xs font-semibold text-gray-600 no-print">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartItems">
+                        <tr>
+                            <td colspan="6" class="text-center py-8 text-gray-500">No items added yet</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Total -->
+            <div class="border-t border-gray-200 mt-4 pt-4 no-print">
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-semibold text-gray-800">Total Amount:</span>
+                    <span class="text-xl font-bold text-green-600" id="totalAmount">₹0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3 no-print">
+            <button onclick="clearCart()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                Clear Cart
+            </button>
+            <button onclick="printList()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                🖨️ Print Shopping List
+            </button>
+        </div>
+
+
+    </div>
+
+    <script>
+        let cartItems = [];
+        let serialNumber = 1;
+        let defaultPrices = {}; // Store default prices
+
+        // Update unit and price when item is selected
+        document.getElementById('itemSelect').addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue) {
+                const [itemName, unit, price] = selectedValue.split('|');
+                document.getElementById('unitInput').value = unit;
+                document.getElementById('priceInput').value = price;
+                
+                // Store default price for reset functionality
+                defaultPrices[itemName] = price;
+                
+                document.getElementById('qtyInput').focus();
+            } else {
+                document.getElementById('unitInput').value = '';
+                document.getElementById('priceInput').value = '';
+            }
+        });
+
+        function resetPrice() {
+            const itemSelect = document.getElementById('itemSelect');
+            if (itemSelect.value) {
+                const [itemName] = itemSelect.value.split('|');
+                const defaultPrice = defaultPrices[itemName];
+                if (defaultPrice) {
+                    document.getElementById('priceInput').value = defaultPrice;
+                }
+            }
+        }
+
+        function addItem() {
+            const itemSelect = document.getElementById('itemSelect');
+            const qtyInput = document.getElementById('qtyInput');
+            const unitInput = document.getElementById('unitInput');
+            const priceInput = document.getElementById('priceInput');
+
+            if (!itemSelect.value || !qtyInput.value || qtyInput.value <= 0) {
+                alert('Please select an item and enter a valid quantity');
+                return;
+            }
+
+            if (!priceInput.value || priceInput.value <= 0) {
+                alert('Please enter a valid price');
+                return;
+            }
+
+            const [itemName] = itemSelect.value.split('|');
+            const quantity = parseFloat(qtyInput.value);
+            const unit = unitInput.value;
+            const pricePerUnit = parseFloat(priceInput.value);
+            const totalPrice = quantity * pricePerUnit;
+
+            const item = {
+                id: Date.now(),
+                serialNo: serialNumber++,
+                name: itemName,
+                quantity: quantity,
+                unit: unit,
+                pricePerUnit: pricePerUnit,
+                totalPrice: totalPrice
+            };
+
+            cartItems.push(item);
+            updateCartDisplay();
+            clearForm();
+        }
+
+        function removeItem(id) {
+            cartItems = cartItems.filter(item => item.id !== id);
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartItemsElement = document.getElementById('cartItems');
+            const totalAmountElement = document.getElementById('totalAmount');
+            const printCartItemsElement = document.getElementById('printCartItems');
+            const printTotalAmountElement = document.getElementById('printTotalAmount');
+            const printItemCountElement = document.getElementById('printItemCount');
+
+            if (cartItems.length === 0) {
+                cartItemsElement.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-500">No items added yet</td></tr>';
+                totalAmountElement.textContent = '₹0.00';
+                printCartItemsElement.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No items added yet</td></tr>';
+                printTotalAmountElement.textContent = '₹0.00';
+                printItemCountElement.textContent = '0';
+                return;
+            }
+
+            let html = '';
+            let printHtml = '';
+            let totalAmount = 0;
+
+            cartItems.forEach(item => {
+                totalAmount += item.totalPrice;
+                
+                // Screen version
+                html += `
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 text-gray-800">${item.serialNo}</td>
+                        <td class="py-3 text-gray-800 font-medium">${item.name}</td>
+                        <td class="py-3 text-gray-600">${item.quantity}</td>
+                        <td class="py-3 text-gray-600">${item.unit}</td>
+                        <td class="py-3 text-right text-gray-800 font-semibold">₹${item.totalPrice.toFixed(2)}</td>
+                        <td class="py-3 text-center no-print">
+                            <button onclick="removeItem(${item.id})" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+                `;
+
+                // Print version
+                printHtml += `
+                    <tr>
+                        <td style="text-align: center;">${item.serialNo}</td>
+                        <td>${item.name}</td>
+                        <td style="text-align: center;">${item.quantity}</td>
+                        <td style="text-align: center;">${item.unit}</td>
+                        <td style="text-align: right;">₹${item.pricePerUnit.toFixed(2)}</td>
+                        <td style="text-align: right; font-weight: bold;">₹${item.totalPrice.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            cartItemsElement.innerHTML = html;
+            totalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
+            printCartItemsElement.innerHTML = printHtml;
+            printTotalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
+            printItemCountElement.textContent = cartItems.length.toString();
+        }
+
+        function clearForm() {
+            document.getElementById('itemSelect').value = '';
+            document.getElementById('qtyInput').value = '';
+            document.getElementById('unitInput').value = '';
+            document.getElementById('priceInput').value = '';
+        }
+
+        function clearCart() {
+            if (cartItems.length === 0) {
+                alert('Cart is already empty');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to clear all items from the cart?')) {
+                cartItems = [];
+                serialNumber = 1;
+                updateCartDisplay();
+            }
+        }
+
+        function printList() {
+            if (cartItems.length === 0) {
+                alert('Please add some items to your cart before printing');
+                return;
+            }
+
+            // Set print date and time
+            const now = new Date();
+            document.getElementById('printDate2').textContent = now.toLocaleDateString();
+            document.getElementById('printTime').textContent = now.toLocaleTimeString();
+            
+            // Print the page
+            window.print();
+        }
+
+        // Auto-calculate total as user types in price field
+        document.getElementById('priceInput').addEventListener('input', function() {
+            // Optional: Show live calculation preview
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9794ac5c9202465e',t:'MTc1Njg5NjQ5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
