@@ -446,13 +446,19 @@
                 return;
             }
 
-            // Create a canvas with 9:16 aspect ratio (width:height = 9:16, so 900x1600 for good quality)
+            // Calculate dynamic height based on number of items
+            const baseHeight = 800; // Base height for header, summary, tips
+            const rowHeight = 40; // Increased row height for bigger text
+            const headerHeight = 45; // Table header height
+            const dynamicHeight = baseHeight + (cartItems.length * rowHeight) + headerHeight;
+            
+            // Create a canvas with dynamic height
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Set canvas size (9:16 ratio - 900x1600 for high quality)
+            // Set canvas size (fixed width, dynamic height)
             canvas.width = 900;
-            canvas.height = 1600;
+            canvas.height = Math.max(dynamicHeight, 1200); // Minimum height
             
             // Create gradient background
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -463,25 +469,25 @@
             
             // Add border
             ctx.strokeStyle = '#0369a1';
-            ctx.lineWidth = 6;
+            ctx.lineWidth = 8;
             ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
             
-            // Header
+            // Header (bigger text)
             ctx.fillStyle = '#0369a1';
-            ctx.font = 'bold 36px Arial';
+            ctx.font = 'bold 48px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('🛒 GROCERY SHOPPING LIST', canvas.width / 2, 80);
+            ctx.fillText('🛒 GROCERY SHOPPING LIST', canvas.width / 2, 90);
             
-            ctx.font = '18px Arial';
+            ctx.font = '24px Arial';
             ctx.fillStyle = '#64748b';
-            ctx.fillText('Your Complete Shopping Guide', canvas.width / 2, 110);
+            ctx.fillText('Your Complete Shopping Guide', canvas.width / 2, 130);
             
             // Draw line under header
             ctx.strokeStyle = '#0369a1';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 4;
             ctx.beginPath();
-            ctx.moveTo(50, 140);
-            ctx.lineTo(canvas.width - 50, 140);
+            ctx.moveTo(50, 160);
+            ctx.lineTo(canvas.width - 50, 160);
             ctx.stroke();
             
             // Calculate totals
@@ -489,29 +495,28 @@
             cartItems.forEach(item => totalAmount += item.totalPrice);
             
             // Items table (full width for portrait)
-            const tableStartY = 180;
+            const tableStartY = 200;
             const tableWidth = 800;
-            const rowHeight = 30;
             
-            // Table header
+            // Table header (bigger text)
             ctx.fillStyle = '#0369a1';
-            ctx.fillRect(50, tableStartY, tableWidth, 35);
+            ctx.fillRect(50, tableStartY, tableWidth, headerHeight);
             
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 14px Arial';
+            ctx.font = 'bold 18px Arial';
             ctx.textAlign = 'left';
-            ctx.fillText('S.No', 65, tableStartY + 22);
-            ctx.fillText('Item Name', 120, tableStartY + 22);
-            ctx.fillText('Qty', 450, tableStartY + 22);
-            ctx.fillText('Unit', 520, tableStartY + 22);
-            ctx.fillText('Rate', 600, tableStartY + 22);
+            ctx.fillText('S.No', 65, tableStartY + 28);
+            ctx.fillText('Item Name', 120, tableStartY + 28);
+            ctx.fillText('Qty', 450, tableStartY + 28);
+            ctx.fillText('Unit', 520, tableStartY + 28);
+            ctx.fillText('Rate', 600, tableStartY + 28);
             ctx.textAlign = 'right';
-            ctx.fillText('Amount (₹)', 830, tableStartY + 22);
+            ctx.fillText('Amount (₹)', 830, tableStartY + 28);
             
-            // Table rows
-            ctx.font = '12px Arial';
+            // Table rows (bigger text)
+            ctx.font = '16px Arial';
             cartItems.forEach((item, index) => {
-                const y = tableStartY + 35 + (index * rowHeight);
+                const y = tableStartY + headerHeight + (index * rowHeight);
                 
                 // Alternating row colors
                 if (index % 2 === 0) {
@@ -521,75 +526,90 @@
                 
                 ctx.fillStyle = '#1f2937';
                 ctx.textAlign = 'left';
-                ctx.fillText(item.serialNo.toString(), 65, y + 18);
-                ctx.fillText(item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name, 120, y + 18);
-                ctx.fillText(item.quantity.toString(), 450, y + 18);
-                ctx.fillText(item.unit, 520, y + 18);
-                ctx.fillText('₹' + item.pricePerUnit.toFixed(2), 600, y + 18);
+                ctx.fillText(item.serialNo.toString(), 65, y + 25);
+                ctx.fillText(item.name.length > 28 ? item.name.substring(0, 28) + '...' : item.name, 120, y + 25);
+                ctx.fillText(item.quantity.toString(), 450, y + 25);
+                ctx.fillText(item.unit, 520, y + 25);
+                ctx.fillText('₹' + item.pricePerUnit.toFixed(2), 600, y + 25);
                 ctx.textAlign = 'right';
-                ctx.fillText('₹' + item.totalPrice.toFixed(2), 830, y + 18);
+                ctx.fillText('₹' + item.totalPrice.toFixed(2), 830, y + 25);
             });
             
-            // Summary section (below table for portrait)
-            const summaryY = tableStartY + 35 + (cartItems.length * rowHeight) + 40;
+            // Summary section (below table)
+            const summaryY = tableStartY + headerHeight + (cartItems.length * rowHeight) + 50;
             const summaryWidth = 800;
             
-            // Total amount section
+            // Total amount section (bigger)
             ctx.fillStyle = '#0369a1';
-            ctx.fillRect(50, summaryY, summaryWidth, 60);
+            ctx.fillRect(50, summaryY, summaryWidth, 80);
             
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 18px Arial';
+            ctx.font = 'bold 24px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('TOTAL AMOUNT', canvas.width / 2, summaryY + 25);
-            ctx.font = 'bold 28px Arial';
-            ctx.fillText('₹' + totalAmount.toFixed(2), canvas.width / 2, summaryY + 50);
+            ctx.fillText('TOTAL AMOUNT', canvas.width / 2, summaryY + 30);
+            ctx.font = 'bold 36px Arial';
+            ctx.fillText('₹' + totalAmount.toFixed(2), canvas.width / 2, summaryY + 65);
             
             // Summary details section
-            const detailsY = summaryY + 80;
+            const detailsY = summaryY + 100;
             ctx.fillStyle = 'white';
-            ctx.fillRect(50, detailsY, summaryWidth, 120);
+            ctx.fillRect(50, detailsY, summaryWidth, 140);
             ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(50, detailsY, summaryWidth, 120);
+            ctx.lineWidth = 3;
+            ctx.strokeRect(50, detailsY, summaryWidth, 140);
             
             ctx.fillStyle = '#0369a1';
-            ctx.font = 'bold 16px Arial';
+            ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('Summary Details', canvas.width / 2, detailsY + 25);
+            ctx.fillText('Summary Details', canvas.width / 2, detailsY + 30);
             
             ctx.fillStyle = '#1f2937';
-            ctx.font = '14px Arial';
+            ctx.font = '18px Arial';
             ctx.textAlign = 'left';
             const now = new Date();
             
-            ctx.fillText('Total Items: ' + cartItems.length, 80, detailsY + 50);
-            ctx.fillText('Date: ' + now.toLocaleDateString(), 80, detailsY + 75);
-            ctx.fillText('Time: ' + now.toLocaleTimeString(), 80, detailsY + 100);
+            ctx.fillText('Total Items: ' + cartItems.length, 80, detailsY + 65);
+            ctx.fillText('Date: ' + now.toLocaleDateString(), 80, detailsY + 95);
+            ctx.fillText('Time: ' + now.toLocaleTimeString(), 80, detailsY + 125);
             
-            // Shopping tips section
-            const tipsY = detailsY + 140;
+            // Shopping instructions section (expanded)
+            const tipsY = detailsY + 160;
             ctx.fillStyle = '#f8fafc';
-            ctx.fillRect(50, tipsY, summaryWidth, 100);
+            ctx.fillRect(50, tipsY, summaryWidth, 220);
             ctx.strokeStyle = '#e2e8f0';
-            ctx.strokeRect(50, tipsY, summaryWidth, 100);
+            ctx.strokeRect(50, tipsY, summaryWidth, 220);
             
             ctx.fillStyle = '#0369a1';
-            ctx.font = 'bold 14px Arial';
+            ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('Shopping Tips', canvas.width / 2, tipsY + 20);
+            ctx.fillText('Smart Shopping Instructions', canvas.width / 2, tipsY + 25);
             
             ctx.fillStyle = '#1f2937';
-            ctx.font = '12px Arial';
+            ctx.font = '16px Arial';
             ctx.textAlign = 'left';
-            ctx.fillText('✓ Check expiry dates     ✓ Compare prices', 80, tipsY + 45);
-            ctx.fillText('✓ Bring reusable bags    ✓ Stick to your list', 80, tipsY + 70);
             
-            // Footer
+            // Shopping tips with better spacing
+            const tips = [
+                '✓ Check expiry dates on all packaged items',
+                '✓ Compare prices between brands',
+                '✓ Bring reusable bags to reduce plastic waste',
+                '✓ Stick to your list to avoid overspending',
+                '✓ Shop for fresh produce first, frozen items last',
+                '✓ Check for seasonal discounts and offers',
+                '✓ Verify weights and quantities before billing',
+                '✓ Keep receipts for warranty and returns',
+                '✓ Store perishables properly after shopping'
+            ];
+            
+            tips.forEach((tip, index) => {
+                ctx.fillText(tip, 80, tipsY + 55 + (index * 20));
+            });
+            
+            // Footer (bigger text)
             ctx.fillStyle = '#64748b';
-            ctx.font = '12px Arial';
+            ctx.font = '16px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('Generated by Grocery Shopping App | Happy Shopping! 🛒', canvas.width / 2, canvas.height - 30);
+            ctx.fillText('Generated by Grocery Shopping App | Happy Shopping! 🛒', canvas.width / 2, canvas.height - 40);
             
             // Convert canvas to blob and download
             canvas.toBlob(function(blob) {
@@ -609,5 +629,5 @@
             // Optional: Show live calculation preview
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9794dc89455e465e',t:'MTc1Njg5ODQ2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9794e6ecc090465e',t:'MTc1Njg5ODg5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
